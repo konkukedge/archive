@@ -1,16 +1,29 @@
 var jsonData;
 var gameDictionary;
 var selectedMenu=-1;
+
+    const tooltip = document.createElement("div");
+    tooltip.style.position = "fixed";
+    tooltip.style.padding = "6px 10px";
+    tooltip.style.background = "rgba(0, 0, 0, 0.75)";
+    tooltip.style.color = "white";
+    tooltip.style.fontSize = "14px";
+    tooltip.style.borderRadius = "5px";
+    tooltip.style.pointerEvents = "none";
+    tooltip.style.whiteSpace = "nowrap";
+    tooltip.style.zIndex = "9999";
+    tooltip.style.display = "none";
 $(document).ready(function(){
     $('#loader').show(); // 시작 시 로딩 표시
     gameDictionary = new Map();
     google.charts.load('current', { packages: ['corechart'] }).then(function () {
         var query = new google.visualization.Query('https://spreadsheets.google.com/tq?key=1RoujVUSQD7mOI2tpeqBszpjjt4tkgLEpr1LHcWND3O8&pub=1');
-        query.send(function (response) {            
-        var dataTable = response.getDataTable();
+        query.send(function (response) {   
+        console.log(response);         
+        const dataTable = response.getDataTable();
+
         jsonData = dataTable.toJSON();            
         jsonData = JSON.parse(jsonData);
-        console.log(jsonData)
         var lastKey;
         for(var i=0; i < jsonData.rows.length; i++) {
             var key = jsonData.rows[i].c[0].v;
@@ -52,6 +65,10 @@ $(document).ready(function(){
             gameObject.cafe = jsonData.rows[i].c[4].v;
             gameObject.makers = jsonData.rows[i].c[5].v;
             gameObject.platform = jsonData.rows[i].c[6].v;
+            gameObject.rank = -1;
+            if (jsonData.rows[i].c.length > 7) {
+                gameObject.rank = jsonData.rows[i].c[7].v;
+            }
             gameDictionary.get(key).push(gameObject);
         }
         initGame(lastKey);
@@ -59,65 +76,148 @@ $(document).ready(function(){
         });
       });
 
+    document.body.appendChild(tooltip);
 });
 
 function initGame(key){
     $(".game").empty();
-    var keyStr = '#'+key.replace(' ','');
-    if(selectedMenu != -1){
+    const keyStr = '#' + key.replace(' ', '');
+    if (selectedMenu !== -1) {
         $(selectedMenu).removeClass('selected');
     }
     $(keyStr).addClass('selected');
     selectedMenu = keyStr;
-    gameList = gameDictionary.get(key);
-    for(let i = 0; i<gameList.length; i++){
-        var game = gameList[i];
-        var newDiv = document.createElement("div");
+    
+    const priorityMap = {
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        '-1': 6
+    };
+
+    const gameList = gameDictionary.get(key).slice().sort((a, b) => {
+        const rankA = priorityMap[a.rank] ?? 6;
+        const rankB = priorityMap[b.rank] ?? 6;
+        return rankA - rankB;
+    });
+
+    for (let i = 0; i < gameList.length; i++) {
+        const game = gameList[i];
+        const newDiv = document.createElement("div");
         newDiv.className = "card";
-        
-        var img = document.createElement("img");
-        img.setAttribute('src',game.image);
+
+        if (game.rank === 1) {
+            newDiv.classList.add("rank-first");
+            newDiv.setAttribute("data-rank-label", "1위");
+        } else if (game.rank === 2) {
+            newDiv.classList.add("rank-second");
+            newDiv.setAttribute("data-rank-label", "2위");
+        } else if (game.rank === 3) {
+            newDiv.classList.add("rank-third");
+            newDiv.setAttribute("data-rank-label", "3위");
+        } else if (game.rank === 4) {
+            newDiv.classList.add("rank-special");
+            newDiv.setAttribute("data-rank-label", "장려상");
+        } else if (game.rank === 5) {
+            newDiv.classList.add("rank-external");
+            newDiv.setAttribute("data-rank-label", "대외 수상");
+        } else {
+            newDiv.setAttribute("data-rank-label", "");
+        }
+
+        const img = document.createElement("img");
+        img.setAttribute('src', game.image);
         img.setAttribute('referrerpolicy', 'no-referrer');
-        console.log(img.src);
-        var p1 = document.createElement("p");
-        var starsSpan = document.createElement("span");
+
+        const p1 = document.createElement("p");
+        const starsSpan = document.createElement("span");
         starsSpan.style.color = "#e2703a";
-        starsSpan.className = "maker"
+        starsSpan.className = "maker";
         starsSpan.innerHTML = game.makers;
         p1.appendChild(starsSpan);
-        
-        var p2 = document.createElement("p");
-        var fontSizeSpan = document.createElement("span");
-        fontSizeSpan.className = "name"
+
+        const p2 = document.createElement("p");
+        const fontSizeSpan = document.createElement("span");
+        fontSizeSpan.className = "name";
         fontSizeSpan.innerHTML = game.name;
         p2.appendChild(fontSizeSpan);
-        var p3 = document.createElement("p");
-        var fontSizeSpan2 = document.createElement("span");
-        fontSizeSpan2.className = "platform"
+
+        const p3 = document.createElement("p");
+        const fontSizeSpan2 = document.createElement("span");
+        fontSizeSpan2.className = "platform";
         fontSizeSpan2.innerHTML = game.platform;
         p3.appendChild(fontSizeSpan2);
-        var cafe = document.createElement("a");
+
+        const cafe = document.createElement("a");
         cafe.href = game.cafe;
-        cafe.target="_blank";
+        cafe.target = "_blank";
         cafe.className = "cafe";
         cafe.innerHTML = "게임 소개";
-        var downloadlink = document.createElement("a");
+
+        const downloadlink = document.createElement("a");
         downloadlink.href = game.download;
         downloadlink.target = "_blank";
         downloadlink.className = "download";
         downloadlink.innerHTML = "다운로드";
-        
+
         newDiv.appendChild(img);
         newDiv.appendChild(p1);
         newDiv.appendChild(p2);
         newDiv.appendChild(p3);
         newDiv.appendChild(cafe);
         newDiv.appendChild(downloadlink);
-        
+
         $(".game").append(newDiv);
     }
-    console.log(gameList);
 }
+
+let currentMouseX;
+let currentMouseY;
+let tooltipTimer;   
+  $(document).on("mouseenter", ".card", function (e) {
+    const label = this.getAttribute("data-rank-label");
+    if (label) {
+      tooltipTimer = setTimeout(() => {
+        tooltip.innerText = label;
+        tooltip.style.top = currentMouseY + 15 + "px";
+        tooltip.style.left = currentMouseX + 15 + "px";
+        tooltip.style.display = "block";
+      }, 1000);
+    }
+  });
+
+  $(document).on("mousemove", ".card", function (e) {
+    tooltip.style.top = e.clientY + 15 + "px";
+    tooltip.style.left = e.clientX + 15 + "px";
+    currentMouseX = e.clientX;
+    currentMouseY = e.clientY;
+  });
+
+  $(document).on("mouseleave", ".card", function () {
+    clearTimeout(tooltipTimer);
+    tooltip.style.display = "none";
+  });
+
+typeToClassLabel = {
+  1: { class: "rank-first", label: "1등" },
+  2: { class: "rank-second", label: "2등" },
+  3: { class: "rank-third", label: "3등" },
+  4: { class: "rank-special", label: "장려상" },
+  5: { class: "rank-external", label: "대외수상" },
+};
+
+function applyRankBadge(div, rank) {
+  const info = typeToClassLabel[rank];
+  if (info) {
+    div.classList.add(info.class);
+    div.setAttribute("data-rank-label", info.label);
+  } else {
+    div.removeAttribute("data-rank-label");
+  }
+}
+
 
 
 
