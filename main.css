@@ -37,7 +37,7 @@ aside {
   overflow-x: auto;
   white-space: nowrap;
   padding: 10px;
-  z-index: 999;
+  z-index: 1001; /* 헤더보다 위에 보이도록 설정 */
 }
 
 .menu {
@@ -137,7 +137,7 @@ aside ul {
 
 @media screen and (max-width: 768px) {
   section {
-    padding-top: 160px;
+    padding-top: 180px; /* 헤더와 상단 메뉴 높이 합산해서 여백 확보 */
     justify-content: center;
   }
 }
