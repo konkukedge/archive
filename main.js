@@ -2,6 +2,7 @@ var jsonData;
 var gameDictionary;
 var selectedMenu=-1;
 $(document).ready(function(){
+    $('#loader').show(); // 시작 시 로딩 표시
     gameDictionary = new Map();
     google.charts.load('current', { packages: ['corechart'] }).then(function () {
         var query = new google.visualization.Query('http://spreadsheets.google.com/tq?key=1RoujVUSQD7mOI2tpeqBszpjjt4tkgLEpr1LHcWND3O8&pub=1');
@@ -44,6 +45,7 @@ $(document).ready(function(){
             gameDictionary.get(key).push(gameObject);
         }
         initGame(lastKey);
+        $('#loader').fadeOut(); // 데이터 로딩 완료 후 숨김
         });
       });
 
