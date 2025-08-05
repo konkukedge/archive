@@ -7,8 +7,6 @@ body {
   background-color: #f4f4f4;
   font-family: 'Noto Sans KR', sans-serif;
   color: #333;
-  min-width: 1024px; /* 데스크탑 기준 고정 */
-  overflow-x: auto;
 }
 
 header {
@@ -84,10 +82,10 @@ section {
   transform: translateY(-5px);
 }
 
-iframe {
+.card img {
   width: 100%;
   height: 180px;
-  border: none;
+  object-fit: cover;
   border-radius: 10px;
   margin-bottom: 15px;
 }
@@ -163,4 +161,41 @@ aside ul {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  header {
+    font-size: 24px;
+    padding: 15px 0;
+  }
+  aside {
+    top: 60px; /* Adjusted for new header height */
+  }
+  section {
+    padding-top: 124px; /* Adjusted for new header and aside height */
+  }
+  .card {
+    width: 150px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .card .cafe, .card .download {
+    font-size: 10px;
+    padding: 5px 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+  }
+  .card .name {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  .card .platform, .card .maker {
+    font-size: 10px;
+    margin: 2px 0;
+  }
+  .card img {
+    height: 90px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+  }
 }
