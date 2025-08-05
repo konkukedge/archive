@@ -21,7 +21,7 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 aside {
@@ -37,7 +37,7 @@ aside {
   overflow-x: auto;
   white-space: nowrap;
   padding: 10px;
-  z-index: 1001; /* 헤더보다 위에 보이도록 설정 */
+  z-index: 1000; /* 헤더보다 아래로 설정 */
 }
 
 .menu {
@@ -139,5 +139,10 @@ aside ul {
   section {
     padding-top: 180px; /* 헤더와 상단 메뉴 높이 합산해서 여백 확보 */
     justify-content: center;
+  }
+
+  .menu {
+    font-size: 14px; /* 모바일 전용 폰트 사이즈 축소 */
+    padding: 10px 16px;
   }
 }
