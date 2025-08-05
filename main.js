@@ -5,7 +5,7 @@ $(document).ready(function(){
     $('#loader').show(); // 시작 시 로딩 표시
     gameDictionary = new Map();
     google.charts.load('current', { packages: ['corechart'] }).then(function () {
-        var query = new google.visualization.Query('http://spreadsheets.google.com/tq?key=1RoujVUSQD7mOI2tpeqBszpjjt4tkgLEpr1LHcWND3O8&pub=1');
+        var query = new google.visualization.Query('https://spreadsheets.google.com/tq?key=1RoujVUSQD7mOI2tpeqBszpjjt4tkgLEpr1LHcWND3O8&pub=1');
         query.send(function (response) {            
         var dataTable = response.getDataTable();
         jsonData = dataTable.toJSON();            
@@ -77,6 +77,7 @@ function initGame(key){
         
         var img = document.createElement("img");
         img.setAttribute('src',game.image);
+        img.setAttribute('referrerpolicy', 'no-referrer');
         console.log(img.src);
         var p1 = document.createElement("p");
         var starsSpan = document.createElement("span");
