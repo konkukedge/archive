@@ -28,5 +28,21 @@ EDGE 게임 개발 경진대회 출품작
     </aside>
     <section class="game">
     </section>
+    <div id="review-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 id="modal-game-title">게임 제목</h2>
+        <div id="review-list">
+          </div>
+        <hr>
+        <h3>후기 남기기</h3>
+        <form id="review-form">
+          <input type="hidden" id="game-name-input" name="gameName">
+          <input type="text" id="reviewer-name" name="reviewerName" placeholder="작성자 이름" required>
+          <textarea id="review-text" name="reviewContent" placeholder="후기를 남겨주세요..." required></textarea>
+          <button type="submit">후기 등록</button>
+        </form>
+      </div>
+    </div>
 </body>
 </html>
