@@ -4,8 +4,10 @@ var jsonData;
 var gameDictionary;
 var selectedMenu = -1;
 
+// ✅ Google Apps Script 웹 앱 URL (위 단계에서 복사한 URL로 교체하세요)
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx50iKmE7Wret4IQu4DG2LKje76QmpwhZ7Ywmf1Ehn0DGZok5ZozHHxvW9EK4wnRWfDyA/exec";
 
+// ✅ 마우스 툴팁 엘리먼트 생성
 const tooltip = document.createElement("div");
 tooltip.style.position = "fixed";
 tooltip.style.padding = "6px 10px";
