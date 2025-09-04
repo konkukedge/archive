@@ -1,13 +1,11 @@
-// main.js (전체 교체)
+// main.js
 
 var jsonData;
 var gameDictionary;
 var selectedMenu = -1;
 
-// ✅ Google Apps Script 웹 앱 URL
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx50iKmE7Wret4IQu4DG2LKje76QmpwhZ7Ywmf1Ehn0DGZok5ZozHHxvW9EK4wnRWfDyA/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx50iKmE7Wret4IQu4DG2LKje76QmpwhZ7Ywmf1Ehn0DGZok5ZozHHxvW9EK4wnRW3a8s6/exec";
 
-// ✅ 마우스 툴팁 엘리먼트 생성
 const tooltip = document.createElement("div");
 tooltip.style.position = "fixed";
 tooltip.style.padding = "6px 10px";
@@ -33,6 +31,7 @@ $(document).ready(function() {
             jsonData = dataTable.toJSON();
             jsonData = JSON.parse(jsonData);
 
+            // 동적 메뉴 생성 (기존 코드)
             for (var i = 0; i < jsonData.rows.length; i++) {
                 var key = jsonData.rows[i].c[0].v;
                 if (!gameDictionary.has(key)) {
@@ -74,11 +73,9 @@ $(document).ready(function() {
                 gameDictionary.get(key).push(gameObject);
             }
 
-            // ✅ 모든 메뉴 생성이 끝난 후, 로딩을 숨기고 intro 페이지를 표시합니다.
+            // 모든 비동기 작업이 완료된 후, 로더를 숨기고 인트로 페이지를 표시합니다.
             $('#loader').fadeOut();
-            // A small delay ensures the newly appended menu items are in the DOM
-            // before we try to select one.
-            setTimeout(initIntro, 100);
+            initIntro();
         });
     });
 
@@ -200,7 +197,6 @@ function initGame(key) {
     }
 }
 
-// --- 후기 관련 함수들 (기존과 동일) ---
 function openReviewModal(gameName) {
     const modal = document.getElementById('review-modal');
     document.getElementById('modal-game-title').textContent = gameName;
@@ -240,7 +236,6 @@ function fetchAndShowReviews(gameName) {
     });
 }
 
-// --- 기존 툴팁 및 뱃지 관련 코드 (수정 없음) ---
 let currentMouseX;
 let currentMouseY;
 let tooltipTimer;
