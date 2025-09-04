@@ -345,3 +345,58 @@ aside ul {
     border-radius: 5px;
   }
 }
+
+.intro-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 800px;
+    padding: 40px;
+    line-height: 1.8;
+    margin: 20px auto;
+}
+.intro-card h2 {
+    font-family: 'Sunflower', sans-serif;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+.intro-card hr {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+}
+.intro-card p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+.intro-card h3 {
+    font-size: 20px;
+    color: #2C3E50;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.intro-card ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+.intro-card li::before {
+    content: '✅';
+    margin-right: 10px;
+}
+.social-links {
+    margin-top: 30px;
+    text-align: center;
+}
+.social-links a {
+    background-color: #3498DB;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.social-links a:hover {
+    background-color: #2980B9;
+}
