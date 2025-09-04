@@ -313,6 +313,7 @@ function initIntro() {
     $(keyStr).addClass('selected');
     selectedMenu = keyStr;
 
+    // ✅ 아래 코드를 추가하여 HTML 내용을 삽입합니다.
     const introHtml = `
         <div class="intro-card">
             <h2>EDGE 동아리 소개</h2>
@@ -331,5 +332,5 @@ function initIntro() {
             </div>
         </div>
     `;
-    $(".game").html(introHtml);
+    $(".game").html(introHtml); // .html() 메서드로 내용을 채웁니다.
 }
