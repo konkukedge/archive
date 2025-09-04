@@ -34,15 +34,13 @@ $(document).ready(function() {
 
             jsonData = dataTable.toJSON();
             jsonData = JSON.parse(jsonData);
-            var lastKey;
             for (var i = 0; i < jsonData.rows.length; i++) {
-                var key = jsonData.rows[i].c[0].v;
-                if (!gameDictionary.has(key)) {
-                    gameDictionary.set(key, []);
-                    var htmlData = "<p id=\"" + key.replace(' ', '') + "\" class=\"menu\" onclick=\"initGame(\'" + key + "\')\">" + jsonData.rows[i].c[0].v;
-                    $(".list ul").append(htmlData);
-                    lastKey = key;
-                }
+                var key = jsonData.rows[i].c[0].v;
+                if (!gameDictionary.has(key)) {
+                    gameDictionary.set(key, []);
+                    var htmlData = "<p id=\"" + key.replace(' ', '') + "\" class=\"menu\" onclick=\"initGame(\'" + key + "\')\">" + jsonData.rows[i].c[0].v;
+                    $(".list ul").append(htmlData);
+                }
                 var gameObject = new Object();
                 gameObject.name = jsonData.rows[i].c[1].v;
                 gameObject.download = jsonData.rows[i].c[2].v;
@@ -78,6 +76,7 @@ $(document).ready(function() {
             }
             initGame(lastKey);
             $('#loader').fadeOut(); // 데이터 로딩 완료 후 숨김
+            initIntro();
         });
     });
 
@@ -303,4 +302,34 @@ function applyRankBadge(div, rank) {
     } else {
         div.removeAttribute("data-rank-label");
     }
+}
+
+function initIntro() {
+    $(".game").empty();
+    const keyStr = '#edgeIntro';
+    if (selectedMenu !== -1) {
+        $(selectedMenu).removeClass('selected');
+    }
+    $(keyStr).addClass('selected');
+    selectedMenu = keyStr;
+
+    const introHtml = `
+        <div class="intro-card">
+            <h2>EDGE 동아리 소개</h2>
+            <hr>
+            <p><strong>EDGE(Enjoy & Development Game Every Day)</strong>는 게임 개발에 관심 있는 학생들이 모여 자유롭게 아이디어를 공유하고, 다양한 게임을 직접 만들어보는 동아리입니다.</p>
+            <p>매년 교내 게임 개발 경진대회를 개최하여 학생들의 창의적인 게임을 발굴하고 시상하고 있습니다. 이 웹사이트는 역대 경진대회 출품작들을 한눈에 볼 수 있도록 정리한 아카이브입니다.</p>
+            <h3>주요 활동</h3>
+            <ul>
+                <li>정기적인 게임 개발 스터디 및 프로젝트 진행</li>
+                <li>게임 개발 경진대회 참여 및 주최</li>
+                <li>게임 잼(Game Jam) 참가 및 자체 개발</li>
+                <li>외부 개발자 특강 및 세미나 개최</li>
+            </ul>
+            <div class="social-links">
+                <a href="https://cafe.naver.com/edgeclub" target="_blank">네이버 카페 바로가기</a>
+            </div>
+        </div>
+    `;
+    $(".game").html(introHtml);
 }
