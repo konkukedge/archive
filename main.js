@@ -25,7 +25,18 @@ $(document).ready(function() {
         packages: ['corechart']
     }).then(function() {
         var query = new google.visualization.Query('https://spreadsheets.google.com/tq?key=1RoujVUSQD7mOI2tpeqBszpjjt4tkgLEpr1LHcWND3O8&pub=1');
+        
+        // 이 부분을 수정된 코드로 교체합니다.
         query.send(function(response) {
+            // ▼▼▼▼▼ 에러 처리 코드 추가 ▼▼▼▼▼
+            if (response.isError()) {
+                console.error('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                alert('데이터를 불러오는 데 실패했습니다. 구글 시트의 공유 설정을 확인하거나 잠시 후 다시 시도해주세요.');
+                $('#loader').fadeOut(); // 에러 발생 시에도 로더를 숨깁니다.
+                return; // 함수 실행 중단
+            }
+            // ▲▲▲▲▲ 에러 처리 코드 추가 ▲▲▲▲▲
+
             console.log(response);
             const dataTable = response.getDataTable();
             jsonData = dataTable.toJSON();
@@ -36,7 +47,6 @@ $(document).ready(function() {
                 var key = jsonData.rows[i].c[0].v;
                 if (!gameDictionary.has(key)) {
                     gameDictionary.set(key, []);
-                    // `id`에 공백이 있으면 안 되므로 정규식을 사용해 모든 공백을 제거합니다.
                     var htmlData = "<p id=\"" + key.replace(/ /g, '') + "\" class=\"menu\" onclick=\"initGame(\'" + key + "\')\">" + jsonData.rows[i].c[0].v;
                     $(".list ul").append(htmlData);
                 }
@@ -74,7 +84,6 @@ $(document).ready(function() {
                 gameDictionary.get(key).push(gameObject);
             }
 
-            // 모든 비동기 작업이 완료된 후, 로더를 숨기고 인트로 페이지를 표시합니다.
             $('#loader').fadeOut();
             initIntro();
         });
