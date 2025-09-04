@@ -4,7 +4,7 @@ var jsonData;
 var gameDictionary;
 var selectedMenu = -1;
 
-// ✅ Google Apps Script 웹 앱 URL (위 단계에서 복사한 URL로 교체하세요)
+// ✅ Google Apps Script 웹 앱 URL
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx50iKmE7Wret4IQu4DG2LKje76QmpwhZ7Ywmf1Ehn0DGZok5ZozHHxvW9EK4wnRWfDyA/exec";
 
 // ✅ 마우스 툴팁 엘리먼트 생성
@@ -37,7 +37,7 @@ $(document).ready(function() {
                 var key = jsonData.rows[i].c[0].v;
                 if (!gameDictionary.has(key)) {
                     gameDictionary.set(key, []);
-                    var htmlData = "<p id=\"" + key.replace(' ', '') + "\" class=\"menu\" onclick=\"initGame(\'" + key + "\')\">" + jsonData.rows[i].c[0].v;
+                    var htmlData = "<p id=\"" + key.replace(/ /g, '') + "\" class=\"menu\" onclick=\"initGame(\'" + key + "\')\">" + jsonData.rows[i].c[0].v;
                     $(".list ul").append(htmlData);
                 }
                 var gameObject = new Object();
@@ -74,20 +74,21 @@ $(document).ready(function() {
                 gameDictionary.get(key).push(gameObject);
             }
 
-            // `initGame(lastKey);`를 삭제합니다.
+            // ✅ 모든 메뉴 생성이 끝난 후, 로딩을 숨기고 intro 페이지를 표시합니다.
             $('#loader').fadeOut();
-            initIntro();
+            // A small delay ensures the newly appended menu items are in the DOM
+            // before we try to select one.
+            setTimeout(initIntro, 100);
         });
     });
 
     document.body.appendChild(tooltip);
 
-    // --- 후기 기능 이벤트 리스너 (추가) ---
+    // --- 후기 기능 이벤트 리스너 (기존과 동일) ---
     const modal = document.getElementById('review-modal');
     const closeButton = document.querySelector('.close-button');
     const reviewForm = document.getElementById('review-form');
 
-    // 닫기 버튼이나 모달 바깥을 클릭하면 닫힘
     closeButton.onclick = () => modal.style.display = 'none';
     window.onclick = (event) => {
         if (event.target == modal) {
@@ -95,9 +96,8 @@ $(document).ready(function() {
         }
     };
 
-    // 후기 폼 제출 이벤트
     reviewForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // 기본 제출 동작 방지
+        e.preventDefault();
         const submitButton = this.querySelector('button[type="submit"]');
         submitButton.disabled = true;
         submitButton.textContent = '등록 중...';
@@ -108,16 +108,14 @@ $(document).ready(function() {
             reviewContent: document.getElementById('review-text').value,
         };
 
-        // Google Apps Script로 데이터 전송
         fetch(APPS_SCRIPT_URL, {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: { 'Content-Type': 'application/json' },
-            mode: 'no-cors' // 응답을 받지 않는 모드
+            mode: 'no-cors'
         })
         .then(() => {
             alert('후기가 성공적으로 등록되었습니다!');
-            // 폼 초기화 및 후기 목록 새로고침
             this.reset();
             fetchAndShowReviews(formData.gameName);
         })
@@ -135,7 +133,7 @@ $(document).ready(function() {
 // 게임 목록 초기화 함수
 function initGame(key) {
     $(".game").empty();
-    const keyStr = '#' + key.replace(' ', '');
+    const keyStr = '#' + key.replace(/ /g, '');
     if (selectedMenu !== -1) {
         $(selectedMenu).removeClass('selected');
     }
@@ -154,15 +152,12 @@ function initGame(key) {
         const newDiv = document.createElement("div");
         newDiv.className = "card";
 
-        // 수상 등급별 클래스 설정
         applyRankBadge(newDiv, game.rank);
 
-        // ✅ 카드 클릭 시 후기 모달 열기 (이벤트 추가)
         newDiv.addEventListener('click', () => {
             openReviewModal(game.name);
         });
 
-        // 카드 내용 생성 (기존과 동일)
         const img = document.createElement("img");
         img.setAttribute('src', game.image);
         img.setAttribute('referrerpolicy', 'no-referrer');
@@ -187,13 +182,13 @@ function initGame(key) {
         cafe.target = "_blank";
         cafe.className = "cafe";
         cafe.innerHTML = "게임 소개";
-        cafe.onclick = (e) => e.stopPropagation(); // 링크 클릭 시 모달 안 뜨게 함
+        cafe.onclick = (e) => e.stopPropagation();
         const downloadlink = document.createElement("a");
         downloadlink.href = game.download;
         downloadlink.target = "_blank";
         downloadlink.className = "download";
         downloadlink.innerHTML = "다운로드";
-        downloadlink.onclick = (e) => e.stopPropagation(); // 링크 클릭 시 모달 안 뜨게 함
+        downloadlink.onclick = (e) => e.stopPropagation();
         newDiv.appendChild(img);
         newDiv.appendChild(p1);
         newDiv.appendChild(p2);
@@ -205,60 +200,45 @@ function initGame(key) {
     }
 }
 
-// --- 후기 관련 함수들 (추가) ---
-
-// 후기 모달을 여는 함수
+// --- 후기 관련 함수들 (기존과 동일) ---
 function openReviewModal(gameName) {
     const modal = document.getElementById('review-modal');
     document.getElementById('modal-game-title').textContent = gameName;
-    document.getElementById('game-name-input').value = gameName; // 폼의 숨겨진 필드에 게임 이름 저장
+    document.getElementById('game-name-input').value = gameName;
     document.getElementById('review-list').innerHTML = '<p>후기를 불러오는 중...</p>';
     modal.style.display = 'block';
     fetchAndShowReviews(gameName);
 }
 
-// 구글 시트에서 후기를 불러와 표시하는 함수
 function fetchAndShowReviews(gameName) {
     const reviewListDiv = document.getElementById('review-list');
-    
-    // 후기 시트의 GID를 사용해야 합니다.
     const reviewSheetQuery = new google.visualization.Query('https://spreadsheets.google.com/tq?key=1RoujVUSQD7mOI2tpeqBszpjjt4tkgLEpr1LHcWND3O8&gid=176236996');
-    
     reviewSheetQuery.send(function(response) {
         if (response.isError()) {
             reviewListDiv.innerHTML = '<p>후기를 불러오는 데 실패했습니다.</p>';
             return;
         }
-
         const dataTable = response.getDataTable();
         const reviews = JSON.parse(dataTable.toJSON()).rows;
-        
-        // 해당 게임의 후기만 필터링
         const filteredReviews = reviews.filter(row => row.c[0] && row.c[0].v === gameName);
-
-        reviewListDiv.innerHTML = ''; // 기존 목록 초기화
-
+        reviewListDiv.innerHTML = '';
         if (filteredReviews.length === 0) {
             reviewListDiv.innerHTML = '<p>아직 작성된 후기가 없습니다.</p>';
         } else {
-            // 최신순으로 정렬 (시트에 날짜 데이터가 있다면 사용)
-            // filteredReviews.reverse(); // 간단하게 역순으로
             filteredReviews.forEach(reviewData => {
                 const reviewer = reviewData.c[1] ? reviewData.c[1].v : '익명';
                 const content = reviewData.c[2] ? reviewData.c[2].v : '';
-
                 const item = document.createElement('div');
                 item.className = 'review-item';
                 item.innerHTML = `
                     <p class="reviewer">${reviewer}</p>
-                    <p>${content.replace(/\n/g, '<br>')}</p> 
-                `; // 줄바꿈 문자 처리
+                    <p>${content.replace(/\n/g, '<br>')}</p>
+                `;
                 reviewListDiv.appendChild(item);
             });
         }
     });
 }
-
 
 // --- 기존 툴팁 및 뱃지 관련 코드 (수정 없음) ---
 let currentMouseX;
@@ -313,7 +293,6 @@ function initIntro() {
     $(keyStr).addClass('selected');
     selectedMenu = keyStr;
 
-    // ✅ 아래 코드를 추가하여 HTML 내용을 삽입합니다.
     const introHtml = `
         <div class="intro-card">
             <h2>EDGE 동아리 소개</h2>
@@ -332,5 +311,5 @@ function initIntro() {
             </div>
         </div>
     `;
-    $(".game").html(introHtml); // .html() 메서드로 내용을 채웁니다.
+    $(".game").html(introHtml);
 }
