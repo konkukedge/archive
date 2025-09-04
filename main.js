@@ -31,16 +31,18 @@ $(document).ready(function() {
         query.send(function(response) {
             console.log(response);
             const dataTable = response.getDataTable();
-
             jsonData = dataTable.toJSON();
             jsonData = JSON.parse(jsonData);
+
+            // ✅ 이제 이 부분에서 메뉴를 생성하고 데이터를 처리합니다.
+            //    initIntro()를 호출하기 전에 모든 동적 메뉴가 존재해야 합니다.
             for (var i = 0; i < jsonData.rows.length; i++) {
-                var key = jsonData.rows[i].c[0].v;
-                if (!gameDictionary.has(key)) {
-                    gameDictionary.set(key, []);
-                    var htmlData = "<p id=\"" + key.replace(' ', '') + "\" class=\"menu\" onclick=\"initGame(\'" + key + "\')\">" + jsonData.rows[i].c[0].v;
-                    $(".list ul").append(htmlData);
-                }
+                var key = jsonData.rows[i].c[0].v;
+                if (!gameDictionary.has(key)) {
+                    gameDictionary.set(key, []);
+                    var htmlData = "<p id=\"" + key.replace(' ', '') + "\" class=\"menu\" onclick=\"initGame(\'" + key + "\')\">" + jsonData.rows[i].c[0].v;
+                    $(".list ul").append(htmlData);
+                }
                 var gameObject = new Object();
                 gameObject.name = jsonData.rows[i].c[1].v;
                 gameObject.download = jsonData.rows[i].c[2].v;
@@ -74,9 +76,10 @@ $(document).ready(function() {
                 }
                 gameDictionary.get(key).push(gameObject);
             }
-            initGame(lastKey);
-            $('#loader').fadeOut(); // 데이터 로딩 완료 후 숨김
+
+            // ✅ 모든 동적 메뉴가 생성된 후, initIntro()를 호출합니다.
             initIntro();
+            $('#loader').fadeOut(); // 데이터 로딩 완료 후 숨김
         });
     });
 
