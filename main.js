@@ -302,8 +302,7 @@ function initIntro() {
         <div class="intro-card">
             <h2>EDGE 동아리 소개</h2>
             <hr>
-            <p>안녕하세요!
-            <hr>
+            <p>안녕하세요!</p>
             <p><strong>EDGE(Extreme Development Game Ecole)</strong>는 건국대학교 서울캠퍼스 유일 게임제작 중앙 동아리입니다.</p>
             <p>매년 교내 게임 개발 경진대회를 개최하여 학생들의 창의적인 게임을 발굴하고 시상하고 있습니다. 이 웹사이트는 역대 경진대회 출품작들을 한눈에 볼 수 있도록 정리한 아카이브입니다.</p>
             <h3>주요 활동</h3>
