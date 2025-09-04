@@ -36,6 +36,7 @@ $(document).ready(function() {
                 var key = jsonData.rows[i].c[0].v;
                 if (!gameDictionary.has(key)) {
                     gameDictionary.set(key, []);
+                    // `id`에 공백이 있으면 안 되므로 정규식을 사용해 모든 공백을 제거합니다.
                     var htmlData = "<p id=\"" + key.replace(/ /g, '') + "\" class=\"menu\" onclick=\"initGame(\'" + key + "\')\">" + jsonData.rows[i].c[0].v;
                     $(".list ul").append(htmlData);
                 }
