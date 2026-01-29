@@ -6,20 +6,20 @@
   padding: 0;
 }
 body {
-  background-color: #f4f4f4;
+  background-color: #F0F3F7; /* Secondary light gray */
   font-family: 'Noto Sans KR', sans-serif;
-  color: #333;
+  color: #333333; /* Dark gray for text */
 }
 
 header {
-  background-color: #2C3E50;
+  background-color: #212A3E; /* Primary dark blue/gray */
   color: white;
   font-size: 36px;
-  font-weight: bold;
+  font-weight: 700; /* Use numeric weight for Pretendard */
   text-align: center;
   padding: 20px 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Sunflower', sans-serif;
+  font-family: 'Pretendard', sans-serif; /* New heading font */
   position: fixed;
   top: 0;
   width: 100%;
@@ -27,7 +27,7 @@ header {
 }
 
 aside {
-  background-color: #34495E;
+  background-color: #212A3E; /* Primary dark blue/gray */
   width: 100%;
   position: fixed;
   top: 80px;
@@ -43,10 +43,10 @@ aside {
 }
 
 .menu {
-  background-color: #2C3E50;
+  background-color: #212A3E; /* Primary dark blue/gray */
   color: white;
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: 5px; /* Consistent border-radius */
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -54,75 +54,82 @@ aside {
   flex: 0 0 auto;
   white-space: nowrap;
   font-size: 16px;
+  font-weight: 500; /* Medium weight for menu items */
 }
 .menu:hover, .selected {
-  background-color: #ECF0F1;
-  color: #2C3E50;
+  background-color: #F0F3F7; /* Secondary light gray */
+  color: #212A3E; /* Primary dark blue/gray */
 }
 
 section {
   padding: 160px 20px 40px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center; /* Center cards */
   gap: 20px;
 }
 
 .card {
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-radius: 10px; /* Slightly less rounded */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Softer shadow */
   width: 300px;
   aspect-ratio: 3 / 4.2;
   padding: 20px;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
+  position: relative; /* Keep for badges */
   border: 3px solid transparent;
 }
 .card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* More pronounced shadow on hover */
 }
 
 .card img {
   width: 100%;
   height: 180px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 8px; /* Consistent with card border-radius */
   margin-bottom: 15px;
 }
 
 .name {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700; /* Use numeric weight for Pretendard */
   margin: 10px 0;
-  font-family: 'Sunflower', sans-serif;
+  font-family: 'Pretendard', sans-serif; /* New heading font */
 }
 
 .platform, .maker {
   font-size: 14px;
-  color: #666;
+  color: #666666; /* Slightly darker gray for better readability */
   margin: 4px 0;
 }
 
 .cafe, .download {
-  margin-top: 10px;
+  margin-top: 15px; /* Increased margin for better separation */
   padding: 10px 15px;
-  border-radius: 8px;
+  border-radius: 5px; /* Consistent border-radius */
   font-size: 14px;
   text-decoration: none;
   color: white;
-  background-color: #2980B9;
+  background-color: #5D9CDE; /* Accent blue */
   transition: background-color 0.3s ease;
+  font-weight: 500; /* Consistent font-weight for buttons */
+  border: none;
+  width: 80%; /* Make buttons span more of the card width */
+  text-align: center;
 }
 
 .download {
-  background-color: #E67E22;
+  margin-top: 10px;
 }
+
 .download:hover, .cafe:hover {
-  background-color: #1ABC9C;
+  background-color: #4A8BCD; /* Slightly darker accent on hover */
 }
 
 footer {
@@ -147,6 +154,7 @@ aside ul {
   top: -8px;
   left: -8px;
   font-size: 30px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* Add subtle shadow to badges */
 }
 
 .card.rank-first {
@@ -200,15 +208,13 @@ aside ul {
 .spinner {
   width: 60px;
   height: 60px;
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #2C3E50;
+  border: 8px solid #F0F3F7; /* Match secondary background */
+  border-top: 8px solid #5D9CDE; /* Accent color for spinner */
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
-/* main.css */
-
-/* --- 후기 모달 스타일 (아래 내용 전체 추가) --- */
+/* --- 후기 모달 스타일 --- */
 
 /* 모달 배경 */
 .modal {
@@ -228,7 +234,7 @@ aside ul {
   background-color: #fefefe;
   margin: 10% auto;
   padding: 30px;
-  border: 1px solid #888;
+  border: 1px solid #BBBBBB; /* Neutral border color */
   width: 80%;
   max-width: 600px;
   border-radius: 10px;
@@ -238,7 +244,7 @@ aside ul {
 
 /* 닫기 버튼 */
 .close-button {
-  color: #aaa;
+  color: #666666; /* Match general text color */
   position: absolute;
   top: 10px;
   right: 20px;
@@ -249,7 +255,7 @@ aside ul {
 
 .close-button:hover,
 .close-button:focus {
-  color: black;
+  color: #333333; /* Darker on hover */
 }
 
 /* 후기 목록 */
@@ -257,12 +263,12 @@ aside ul {
   margin-top: 20px;
   max-height: 300px;
   overflow-y: auto;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #BBBBBB; /* Neutral border color */
   padding-top: 10px;
 }
 
 .review-item {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #EEEEEE; /* Lighter neutral for dividers */
   padding: 10px 0;
 }
 
@@ -285,23 +291,24 @@ aside ul {
 #review-form textarea {
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #BBBBBB; /* Neutral border color */
   border-radius: 5px;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
 #review-form button {
   padding: 10px 15px;
-  background-color: #2C3E50;
+  background-color: #5D9CDE; /* Accent blue */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 500; /* Consistent font-weight for buttons */
 }
 
 #review-form button:hover {
-  background-color: #34495E;
+  background-color: #4A8BCD; /* Slightly darker accent on hover */
 }
 
 @keyframes spin {
@@ -323,13 +330,14 @@ aside ul {
   .card {
     width: 150px;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 8px; /* Consistent with new card radius */
   }
   .card .cafe, .card .download {
     font-size: 10px;
     padding: 5px 8px;
-    margin-top: 5px;
+    margin-top: 8px; /* Adjusted margin */
     border-radius: 4px;
+    width: 90%; /* Adjust width for smaller screens */
   }
   .card .name {
     font-size: 14px;
@@ -342,14 +350,14 @@ aside ul {
   .card img {
     height: 90px;
     margin-bottom: 8px;
-    border-radius: 5px;
+    border-radius: 4px; /* Consistent with card border-radius */
   }
 }
 
 .intro-card {
     background: white;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-radius: 10px; /* Consistent with new card radius */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Consistent with card shadow */
     width: 100%;
     max-width: 800px;
     padding: 40px;
@@ -357,14 +365,14 @@ aside ul {
     margin: 20px auto;
 }
 .intro-card h2 {
-    font-family: 'Sunflower', sans-serif;
+    font-family: 'Pretendard', sans-serif; /* New heading font */
     font-size: 32px;
     margin-bottom: 10px;
 }
 .intro-card hr {
     border: 0;
     height: 1px;
-    background: #ccc;
+    background: #BBBBBB; /* Neutral border color */
     margin: 20px 0;
 }
 .intro-card p {
@@ -373,7 +381,7 @@ aside ul {
 }
 .intro-card h3 {
     font-size: 20px;
-    color: #2C3E50;
+    color: #212A3E; /* Primary dark blue/gray */
     margin-top: 30px;
     margin-bottom: 10px;
 }
@@ -384,19 +392,21 @@ aside ul {
 .intro-card li::before {
     content: '✅';
     margin-right: 10px;
+    color: #5D9CDE; /* Accent color for bullet */
 }
 .social-links {
     margin-top: 30px;
     text-align: center;
 }
 .social-links a {
-    background-color: #3498DB;
+    background-color: #5D9CDE; /* Accent blue */
     color: white;
-    padding: 12px 25px;
-    border-radius: 8px;
+    padding: 10px 20px; /* Slightly reduced padding */
+    border-radius: 5px; /* Consistent border-radius */
     text-decoration: none;
     transition: background-color 0.3s ease;
+    font-weight: 500; /* Consistent font-weight for buttons */
 }
 .social-links a:hover {
-    background-color: #2980B9;
+    background-color: #4A8BCD; /* Slightly darker accent on hover */
 }
